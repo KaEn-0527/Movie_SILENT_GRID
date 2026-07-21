@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SILENT GRID｜映画公式サイト</title>
+<meta name="description" content="この街では、すべての記憶が監視されている。彼女との最後の3日間だけが、消されていた。近未来SFサスペンス『SILENT GRID』2030年2月15日（金）全国公開。">
+
+<meta property="og:type" content="video.movie">
+<meta property="og:title" content="SILENT GRID｜映画公式サイト">
+<meta property="og:description" content="この街では、すべての記憶が監視されている。彼女との最後の3日間だけが、消されていた。">
+<meta property="og:image" content="public/images/hero-end.jpg">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#040A15">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+
+<!-- JS無効／読込失敗時にスクロール表示前の要素が隠れたままにならないようにする -->
+<noscript>
+  <style>
+    .reveal { opacity: 1 !important; transform: none !important; }
+    .section { background-image: none !important; }
+  </style>
+</noscript>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Movie",
+  "name": "SILENT GRID",
+  "description": "2030年代の東京。記憶データ解析官ハルト・アイカワは、自分の記憶ログに3日間の空白を見つける。消えたのは、死んだはずの恋人ミサキ・サトウとの最後の記憶。",
+  "genre": ["SF", "アクション", "サスペンス"],
+  "inLanguage": "ja",
+  "image": "public/images/hero-end.jpg",
+  "datePublished": "2030-02-15",
+  "duration": "PT128M",
+  "contentRating": "PG12",
+  "director": { "@type": "Person", "name": "佐藤 博" },
+  "author": { "@type": "Person", "name": "田中 健司" },
+  "musicBy": { "@type": "Person", "name": "神代 玲" },
+  "productionCompany": { "@type": "Organization", "name": "メトロポリス・ピクチャーズ" },
+  "character": [
+    { "@type": "Person", "name": "ハルト・アイカワ" },
+    { "@type": "Person", "name": "ミサキ・サトウ" }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">本文へスキップ</a>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header" id="siteHeader">
+  <div class="container header__inner">
+    <a class="brand" href="#top">SILENT GRID</a>
+    <nav class="nav" aria-label="メインナビゲーション">
+      <a href="#story">STORY</a>
+      <a href="#characters">CHARACTERS</a>
+      <a href="#grid">GRID SYSTEM</a>
+      <a href="#trailer">TRAILER</a>
+      <a href="#theater">THEATER</a>
+    </nav>
+    <a class="btn btn--primary btn--sm header__cta" href="#theater" data-track="sticky_theater_click">上映館を確認</a>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mobileNav" aria-label="メニューを開く">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-nav" id="mobileNav" aria-label="モバイルナビゲーション" hidden>
+    <a href="#story">STORY</a>
+    <a href="#characters">CHARACTERS</a>
+    <a href="#grid">GRID SYSTEM</a>
+    <a href="#trailer">TRAILER</a>
+    <a href="#theater">THEATER</a>
+  </nav>
+</header>
+
+<main id="main">
+
+<!-- ============ 01 HERO ============ -->
+<section class="hero" id="top">
+  <div class="hero__media" aria-hidden="true">
+    <!-- 再生条件を満たした場合のみ、JSが <source> を注入して読み込む。
+         非対象環境（低速回線・データセーバー・動きの低減）では一切取得しない -->
+    <video class="hero__video" id="heroVideo" muted playsinline preload="none"
+           data-src="public/video/hero.mp4"
+           data-src-sm="public/video/hero-sm.mp4"></video>
+  </div>
+  <div class="hero__scrim" aria-hidden="true"></div>
+  <div class="container hero__inner">
+    <h1 class="hero__title reveal">SILENT<br>GRID</h1>
+    <p class="hero__lead reveal">この街では、すべての記憶が監視されている。<br>彼女との最後の3日間だけが、消されていた。</p>
+    <div class="hero__actions reveal">
+      <button class="btn btn--primary" data-trailer-open data-track="fv_trailer_click">
+        <span class="btn__icon" aria-hidden="true">▶</span>予告を見る
+      </button>
+      <a class="btn btn--ghost" href="#theater" data-track="sticky_theater_click">上映館を確認</a>
+    </div>
+    <p class="hero__meta reveal">2030年2月15日（金）全国公開</p>
+  </div>
+  <div class="hero__scroll" aria-hidden="true"><span></span></div>
+</section>
+
+<!-- ============ 02 MEMORY LOG ============ -->
+<section class="section section--memorylog" id="memorylog">
+  <div class="container">
+    <p class="label"><span class="label__rule"></span>MEMORY LOG / 02.12 – 02.14</p>
+    <h2 class="h2 reveal">記録はある。時間も、場所もある。<br>彼女と過ごした3日間だけが、存在しない。</h2>
+    <p class="lead reveal">20XX年、東京。記憶データ解析官ハルトは、自分の記憶ログに3日間の空白を見つける。<br>消えたのは、死んだはずの恋人ミサキとの最後の記憶。</p>
+
+    <div class="logpanel reveal">
+      <div class="logpanel__head">
+        <span>SYSTEM LOG / MEMORY RESTORE</span>
+        <span class="logpanel__status" data-scan>SCANNING<span class="dots"></span></span>
+      </div>
+      <div class="logpanel__rows">
+        <p>02.11: LOCATION TRACKING [TOKYO.AREA.C] ACTIVE</p>
+        <p>02.11: BIOMETRIC DATA SYNCH COMPLETE</p>
+        <p>02.11: MEMORY BACKUP CONFIRMED — 847 ENTRIES</p>
+      </div>
+      <div class="logpanel__days">
+        <article class="daycard">
+          <p class="daycard__date">02.12</p>
+          <p class="daycard__err">DATA NOT FOUND</p>
+          <div class="daycard__slots"><span>IMG</span><span>AUD</span><span>GPS</span></div>
+          <div class="daycard__restore" data-restore="0" aria-hidden="true"></div>
+        </article>
+        <article class="daycard">
+          <p class="daycard__date">02.13</p>
+          <p class="daycard__err">DATA NOT FOUND</p>
+          <div class="daycard__slots"><span>IMG</span><span>AUD</span><span>GPS</span></div>
+          <div class="daycard__restore" data-restore="1" aria-hidden="true"></div>
+        </article>
+        <article class="daycard">
+          <p class="daycard__date">02.14</p>
+          <p class="daycard__err">DATA NOT FOUND</p>
+          <div class="daycard__slots"><span>IMG</span><span>AUD</span><span>GPS</span></div>
+          <div class="daycard__restore" data-restore="2" aria-hidden="true"></div>
+        </article>
+      </div>
+      <p class="logpanel__error">02.12 – 02.14: DATA NOT FOUND — ERROR 404: MEMORY FRAGMENT CORRUPTION — SYSTEM FAILURE: CRITICAL DATA LOSS</p>
+    </div>
+
+    <div class="center reveal">
+      <a class="btn btn--primary" href="#story" id="restoreBtn" data-track="log_continue">記憶ログを復元する</a>
+      <!-- 復元結果は装飾ノイズのため、読み上げ用の要約を別途用意する -->
+      <p class="visually-hidden" id="restoreSummary" role="status" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 STORY ============ -->
+<section class="section section--story" id="story">
+  <div class="container">
+    <p class="label"><span class="label__rule"></span>STORY</p>
+    <div class="story__grid">
+      <figure class="story__figure reveal">
+        <img src="public/images/story-still.webp" alt="雨に濡れた近未来東京の街路に立つハルト" loading="lazy" decoding="async" width="1055" height="1491">
+      </figure>
+      <div class="story__body">
+        <h2 class="h2 h2--accent reveal">死んだはずの彼女。<br>消されたはずの記憶。</h2>
+        <div class="prose reveal">
+          <p>20XX年、東京を中心とした巨大都市圏「<strong>メトロポリス・トーキョー</strong>」。すべての市民の記憶がクラウドに自動バックアップされ、政府が管理する時代。</p>
+          <p>記憶データ解析官の<strong>ハルト・アイカワ</strong>は、ある朝突然、自分の記憶ログに3日間の空白があることに気づく。削除されたのは、恋人の<strong>ミサキ・サトウ</strong>との最後の記憶。彼女は交通事故で亡くなったと告げられていた。</p>
+          <p>しかし違和感を覚えたハルトが調査を始めると、ミサキの死には不可解な点が多く、事故そのものが捏造された可能性が浮かび上がる。さらに、彼女が生前、政府の極秘プロジェクト「<strong>グリッドシステム</strong>」の存在を突き止めていたことが判明する。</p>
+        </div>
+        <p class="story__q reveal">彼女は<em>何</em>を知ったのか？<br>失った記憶ログの<em>真実</em>とはー。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 CHARACTERS ============ -->
+<section class="section section--characters" id="characters">
+  <div class="container">
+    <p class="label"><span class="label__rule"></span>CHARACTER</p>
+    <h2 class="h2 reveal">記憶を管理する男が、自分の記憶を奪われた。</h2>
+    <p class="lead reveal">二人の記録が、失われた3日間の真実へとつながる。</p>
+
+    <div class="chars">
+      <article class="charcard reveal" data-char>
+        <div class="charcard__media">
+          <img src="public/images/char-haruto.webp" alt="記憶データ解析官 ハルト・アイカワ" loading="lazy" decoding="async" width="800" height="1000">
+        </div>
+        <div class="charcard__body">
+          <p class="charcard__role">記憶データ解析官</p>
+          <h3 class="charcard__name">ハルト・アイカワ</h3>
+          <p class="charcard__tag">記憶を管理する男が、自分の記憶を奪われた。</p>
+          <div class="charcard__detail" id="charDetail1" hidden>
+            <p>システムの正しさを信じてきた彼は、恋人の死を境に、自分が守ってきた秩序を疑い始める。</p>
+          </div>
+          <button class="charcard__toggle" aria-expanded="false" aria-controls="charDetail1">
+            <span data-open-label>彼の記憶を読む ▼</span>
+          </button>
+        </div>
+      </article>
+
+      <article class="charcard charcard--warm reveal" data-char>
+        <div class="charcard__media">
+          <img src="public/images/char-misaki.webp" alt="死んだはずの恋人 ミサキ・サトウ" loading="lazy" decoding="async" width="1254" height="1254">
+        </div>
+        <div class="charcard__body">
+          <p class="charcard__role">死んだはずの恋人</p>
+          <h3 class="charcard__name">ミサキ・サトウ</h3>
+          <p class="charcard__tag">交通事故で死んだ——そう告げられただけだった。</p>
+          <div class="charcard__detail" id="charDetail2" hidden>
+            <p>死んだと告げられた彼女は、記憶の中に手掛かりを残した。彼女が最後に見つけたものは、事故よりも危険な真実だった。</p>
+          </div>
+          <button class="charcard__toggle" aria-expanded="false" aria-controls="charDetail2">
+            <span data-open-label>彼女の断片を見る ▼</span>
+          </button>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 GRID SYSTEM ============ -->
+<section class="section section--grid" id="grid">
+  <div class="container">
+    <p class="label"><span class="label__rule"></span>GRID SYSTEM</p>
+    <p class="quote-mono reveal">あなたの記憶は、本当にあなたのものか。<br>愛した事実さえ、消せる世界で。</p>
+    <h2 class="h2 reveal">安全な街は、忘れる自由を許さない。</h2>
+    <p class="lead reveal">GRID SYSTEMは、市民の思考と記憶をリアルタイムで解析し、危険因子を事前に排除する。すべては、都市の安全のために。</p>
+
+    <div class="gridpanel reveal">
+      <p class="gridpanel__cap">GRID SYSTEM : 政府の極秘プロジェクト</p>
+      <ol class="flow">
+        <li class="flow__step">
+          <span class="flow__num">01</span>
+          <h3>記憶収集</h3>
+          <p>全市民の記憶が毎秒クラウドに自動同期される。</p>
+        </li>
+        <li class="flow__step">
+          <span class="flow__num">02</span>
+          <h3>リアルタイム解析</h3>
+          <p>アルゴリズムが思考パターンを解析し脅威度を算出する。</p>
+        </li>
+        <li class="flow__step">
+          <span class="flow__num">03</span>
+          <h3>危険因子の判定</h3>
+          <p>スコアが閾値を超えた市民は「要処理」としてフラグが立つ。</p>
+        </li>
+        <li class="flow__step">
+          <span class="flow__num">04</span>
+          <h3>事前排除</h3>
+          <p>司法手続きを経ることなく、静かに、消える。</p>
+        </li>
+      </ol>
+    </div>
+
+    <div class="accordions reveal">
+      <div class="acc">
+        <button class="acc__btn" aria-expanded="false" aria-controls="acc1">
+          <span>GRID SYSTEMの詳細設定</span><span class="acc__sign" aria-hidden="true">+</span>
+        </button>
+        <div class="acc__panel" id="acc1" hidden>
+          <p>政府が推進する「安全都市計画」の核心を担う極秘プロジェクト。記憶の監視は法律上「公共安全保護法」に基づくとされているが、その運用実態は市民に開示されていない。詳細な設定は作品内で段階的に明かされます。</p>
+        </div>
+      </div>
+      <div class="acc">
+        <button class="acc__btn" aria-expanded="false" aria-controls="acc2">
+          <span>なぜ記憶が削除されるのか</span><span class="acc__sign" aria-hidden="true">+</span>
+        </button>
+        <div class="acc__panel" id="acc2" hidden>
+          <p>システムが「危険因子」と判定した市民は、裁判なしに記憶の消去処分を受ける場合がある。この処分が正当なものなのか、それとも権力による恣意的な排除なのか——ハルトの調査が核心に迫ります。</p>
+        </div>
+      </div>
+      <div class="acc">
+        <button class="acc__btn" aria-expanded="false" aria-controls="acc3">
+          <span>ハルトはなぜ解析官なのか</span><span class="acc__sign" aria-hidden="true">+</span>
+        </button>
+        <div class="acc__panel" id="acc3" hidden>
+          <p>ハルトはGRID SYSTEMの内部で働く記憶データ解析官です。システムの「正しさ」を信じて職務を全うしてきた彼が、自分自身の記憶を消された瞬間、物語は始まります。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 TRAILER ============ -->
+<section class="section section--trailer" id="trailer">
+  <div class="container">
+    <p class="label"><span class="label__rule"></span>TRAILER</p>
+    <h2 class="h2 reveal">失われた記憶の温度を、音と暗闇で。</h2>
+    <p class="lead reveal">近未来東京の静けさ、途切れる声、追跡の速度。『SILENT GRID』の世界を予告で体験してください。</p>
+
+    <button class="player reveal" data-trailer-open data-track="fv_trailer_click" aria-label="本予告を再生">
+      <img src="public/images/trailer-poster.webp" alt="" loading="lazy" decoding="async" width="1672" height="941">
+      <span class="player__btn" aria-hidden="true">▶</span>
+      <span class="player__cap" aria-hidden="true">本予告を再生</span>
+    </button>
+
+    <div class="gallery reveal">
+      <figure>
+        <button type="button" class="gallery__btn" data-lightbox aria-label="場面写真1を拡大表示"
+                data-caption="監視都市の夜景／メトロポリス・トーキョー中央区">
+          <img src="public/images/gallery-1.webp" alt="場面写真1：監視都市の夜景" loading="lazy" decoding="async" width="2160" height="1215">
+          <span class="gallery__zoom" aria-hidden="true">＋</span>
+        </button>
+      </figure>
+      <figure>
+        <button type="button" class="gallery__btn" data-lightbox aria-label="場面写真2を拡大表示"
+                data-caption="記憶ログの解析室／ハルトの職場">
+          <img src="public/images/gallery-2.webp" alt="場面写真2：記憶ログの解析室" loading="lazy" decoding="async" width="2160" height="1215">
+          <span class="gallery__zoom" aria-hidden="true">＋</span>
+        </button>
+      </figure>
+      <figure>
+        <button type="button" class="gallery__btn" data-lightbox aria-label="場面写真3を拡大表示"
+                data-caption="追跡されるハルト／第7監視区画">
+          <img src="public/images/gallery-3.webp" alt="場面写真3：追跡されるハルト" loading="lazy" decoding="async" width="1672" height="941">
+          <span class="gallery__zoom" aria-hidden="true">＋</span>
+        </button>
+      </figure>
+    </div>
+
+    <div class="cta-inline reveal">
+      <a class="btn btn--primary" href="#theater" data-track="trailer_to_theater">近くの上映館を見る</a>
+      <p class="note">現在地または地域から検索できます。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 07 PRODUCTION ============ -->
+<section class="section section--production" id="production">
+  <div class="container">
+    <p class="label"><span class="label__rule"></span>PRODUCTION</p>
+    <h2 class="h2 reveal">なぜ今、記憶の所有を描くのか。</h2>
+
+    <div class="prod__grid">
+      <div class="prod__left reveal">
+        <figure class="prod__figure">
+          <img src="public/images/production-still.webp" alt="撮影現場のスチール" loading="lazy" decoding="async" width="1535" height="1024">
+        </figure>
+        <blockquote class="quote">
+          <p class="quote__cap">［監督コメント］</p>
+          <p>テクノロジーが安全を守るほど、私たちは何を自分のものとして残せるのか。本作は、その問いを一人の喪失から描きます。</p>
+        </blockquote>
+      </div>
+      <div class="prod__right reveal">
+        <p class="label label--plain">CREDITS</p>
+        <dl class="credits">
+          <div><dt>監督</dt><dd>佐藤 博</dd></div>
+          <div><dt>脚本</dt><dd>田中 健司</dd></div>
+          <div><dt>撮影</dt><dd>早瀬 涼介</dd></div>
+          <div><dt>美術</dt><dd>白石 なつき</dd></div>
+          <div><dt>音楽</dt><dd>神代 玲</dd></div>
+          <div><dt>編集</dt><dd>相沢 徹</dd></div>
+          <div><dt>音響設計</dt><dd>桐生 大地</dd></div>
+          <div><dt>VFX</dt><dd>STUDIO NOCTIS</dd></div>
+          <div><dt>主題歌</dt><dd>LUMINOUS TIDE「Erase Me」</dd></div>
+          <div><dt>上映時間</dt><dd>128分</dd></div>
+          <div><dt>レーティング</dt><dd>PG12</dd></div>
+          <div><dt>製作</dt><dd>メトロポリス・ピクチャーズ</dd></div>
+          <div><dt>配給</dt><dd>ワールドスケープ・フィルムズ</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 08 THEATER VALUE ============ -->
+<section class="section section--value" id="value">
+  <div class="container">
+    <p class="label"><span class="label__rule"></span>THEATER EXPERIENCE</p>
+    <h2 class="h2 reveal">この記憶は、劇場で完成する。</h2>
+    <p class="lead reveal">大きな画面、暗闇、途切れる音。ハルトが失った3日間を、情報ではなく体験として受け取るために。</p>
+    <p class="spec-note reveal">IMAX®／Dolby Atmos／4DX で上映。本編は全編ドルビービジョン仕上げ、日本語字幕上映も一部劇場で実施します。</p>
+
+    <div class="valuecards">
+      <article class="valuecard reveal">
+        <span class="valuecard__icon" aria-hidden="true">◻</span>
+        <h3>映像</h3>
+        <p>近未来東京のスケールと、記憶の断片を大画面で体験する。</p>
+      </article>
+      <article class="valuecard reveal">
+        <span class="valuecard__icon" aria-hidden="true">♩</span>
+        <h3>音</h3>
+        <p>静寂、途切れる声、追跡の速度を劇場空間で受け取る。</p>
+      </article>
+      <article class="valuecard reveal">
+        <span class="valuecard__icon" aria-hidden="true">◇</span>
+        <h3>余韻・考察</h3>
+        <p>「記憶は誰のものか」という問いを鑑賞後まで持ち帰る。</p>
+      </article>
+    </div>
+
+    <div class="center reveal">
+      <a class="btn btn--primary" href="#theater" data-track="value_to_schedule">上映時間を確認</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 09 THEATER ============ -->
+<section class="section section--theater" id="theater">
+  <div class="container">
+    <p class="label"><span class="label__rule"></span>THEATER</p>
+    <h2 class="h2 reveal">最後の記憶を、劇場で確かめる。</h2>
+    <p class="lead reveal">地域を選択すると、上映館と上映時間を確認できます。選択後、各劇場のチケットページを開きます。</p>
+
+    <div class="theater__controls reveal">
+      <label class="visually-hidden" for="regionSelect">地域を選択</label>
+      <div class="select-wrap">
+        <select id="regionSelect">
+          <option value="">地域を選択</option>
+          <option value="hokkaido">北海道・東北</option>
+          <option value="kanto">関東</option>
+          <option value="chubu">中部</option>
+          <option value="kansai">近畿</option>
+          <option value="chugoku">中国・四国</option>
+          <option value="kyushu">九州・沖縄</option>
+        </select>
+      </div>
+      <button class="btn btn--ghost" id="geoBtn">現在地から検索</button>
+    </div>
+
+    <div class="theater__result reveal" id="theaterResult" data-empty="true">
+      <p class="theater__hint">地域を選択すると、上映館と本日の上映時間が表示されます。</p>
+    </div>
+
+    <div class="center reveal">
+      <a class="btn btn--ghost" href="#" id="pickTheater" data-track="ticket_outbound">上映館を選ぶ</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10 FINAL CTA ============ -->
+<section class="section section--final" id="final">
+  <div class="container">
+    <div class="phase" role="tablist" aria-label="公開フェーズ">
+      <button role="tab" aria-selected="true" data-phase="theater" class="is-active">劇場公開</button>
+      <button role="tab" aria-selected="false" data-phase="stream">配信フェーズ</button>
+    </div>
+
+    <p class="final__logo">SILENT GRID</p>
+
+    <div data-phase-panel="theater">
+      <h2 class="final__h2">消された3日間の答えを、劇場で。</h2>
+      <p class="final__meta">『SILENT GRID』2030年2月15日（金）全国公開／上映時間 128分／PG12</p>
+      <div class="final__actions">
+        <a class="btn btn--primary" href="#theater" data-track="value_to_schedule">上映時間を確認</a>
+        <a class="btn btn--ghost" href="https://ticket.example.jp/silent-grid" data-track="ticket_outbound" data-outbound>チケット購入ページへ</a>
+      </div>
+    </div>
+
+    <div data-phase-panel="stream" hidden>
+      <h2 class="final__h2">もう一度、あの3日間を復元する。</h2>
+      <p class="final__meta">2030年8月14日（水）より NOCTIS+ ほか主要配信サービスで見放題独占配信。</p>
+      <div class="final__actions">
+        <a class="btn btn--primary" href="https://noctis-plus.example.jp/title/silent-grid" data-track="stream_outbound" data-outbound>配信サービスで視聴する</a>
+      </div>
+    </div>
+
+    <div class="final__share">
+      <button class="btn btn--ghost btn--sm" id="shareBtn">この記憶を共有する</button>
+      <p class="note">作品URLと指定ハッシュタグを共有します。</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer__top">
+      <div>
+        <p class="brand">SILENT GRID</p>
+        <p class="footer__date">2030年2月15日（金）全国公開</p>
+      </div>
+      <div>
+        <p class="label label--plain">SNS</p>
+        <p class="footer__links">
+          <a href="https://x.com/silentgrid_jp" target="_blank" rel="noopener noreferrer">X (Twitter)</a><a href="https://www.youtube.com/@silentgrid_jp" target="_blank" rel="noopener noreferrer">YouTube</a><a href="https://www.instagram.com/silentgrid_jp/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        </p>
+      </div>
+      <div>
+        <p class="label label--plain">CREDITS</p>
+        <p class="footer__credit">監督 佐藤 博 ／ 脚本 田中 健司<br>配給 ワールドスケープ・フィルムズ ／ 製作 メトロポリス・ピクチャーズ</p>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p class="footer__links">
+        <a href="#">プライバシーポリシー</a><a href="#">利用規約</a><a href="#">お問い合わせ</a>
+      </p>
+      <p class="footer__copy">© 2030 SILENT GRID Film Partners. All Rights Reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ STICKY MOBILE CTA ============ -->
+<div class="sticky-cta" id="stickyCta" hidden>
+  <button class="btn btn--primary btn--sm" data-trailer-open data-track="fv_trailer_click">▶ 予告</button>
+  <a class="btn btn--ghost btn--sm" href="#theater" data-track="sticky_theater_click">上映館を確認</a>
+</div>
+
+<!-- ============ TRAILER MODAL ============ -->
+<div class="modal" id="trailerModal" hidden>
+  <div class="modal__backdrop" data-trailer-close></div>
+  <div class="modal__dialog" role="dialog" aria-modal="true" aria-label="本予告">
+    <button class="modal__close" data-trailer-close aria-label="閉じる">×</button>
+    <div class="modal__video">
+      <!-- 開いたときに JS が src を設定する（閉じている間は読み込まない） -->
+      <video id="trailerVideo" controls playsinline preload="none"
+             poster="public/images/hero-end.webp"
+             data-src="public/video/hero.mp4"></video>
+    </div>
+    <p class="modal__cap">本予告／2030年2月15日（金）全国公開</p>
+  </div>
+</div>
+
+<!-- ============ GALLERY LIGHTBOX ============ -->
+<div class="modal modal--lightbox" id="lightboxModal" hidden>
+  <div class="modal__backdrop" data-lightbox-close></div>
+  <div class="modal__dialog modal__dialog--lightbox" role="dialog" aria-modal="true" aria-label="場面写真">
+    <button class="modal__close" data-lightbox-close aria-label="閉じる">×</button>
+
+    <figure class="lightbox__figure">
+      <img id="lightboxImg" src="" alt="">
+      <figcaption class="lightbox__cap">
+        <span id="lightboxCap"></span>
+        <span class="lightbox__count" id="lightboxCount"></span>
+      </figcaption>
+    </figure>
+
+    <button class="lightbox__nav lightbox__nav--prev" id="lightboxPrev" aria-label="前の場面写真"><span aria-hidden="true">❮</span></button>
+    <button class="lightbox__nav lightbox__nav--next" id="lightboxNext" aria-label="次の場面写真"><span aria-hidden="true">❯</span></button>
+  </div>
+</div>
+
+<!-- ============ OUTBOUND CONFIRM ============ -->
+<div class="modal" id="outboundModal" hidden>
+  <div class="modal__backdrop" data-outbound-close></div>
+  <div class="modal__dialog modal__dialog--sm" role="dialog" aria-modal="true" aria-labelledby="outboundTitle">
+    <button class="modal__close" data-outbound-close aria-label="閉じる">×</button>
+    <p class="label label--plain">EXTERNAL LINK</p>
+    <p id="outboundTitle" class="outbound__text">選択した劇場のチケットページを開きます。上映日時を確認して、最後の記憶を劇場で確かめてください。</p>
+    <div class="final__actions">
+      <a class="btn btn--primary" href="#" id="outboundGo">開く</a>
+      <button class="btn btn--ghost" data-outbound-close>戻る</button>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

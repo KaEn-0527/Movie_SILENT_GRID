@@ -1,0 +1,2337 @@
+@charset "UTF-8";
+/* ==========================================================================
+   SILENT GRID — 映画公式ランディングページ
+   Design tokens extracted from Figma (file: voGPExkoBanK57BJY0risf)
+
+   配色方針（企画書 6章「デザイン・UX・実装方針」より）
+     - ベースは濃紺・黒
+     - シアン (#00D4E8) = GRID SYSTEM / システム側の色
+     - 淡い暖色 (#E8B89A) = ミサキの記憶
+     - 赤 (#CC2233) = 欠落・エラー
+   角丸は Figma 全ノードで 0。監視端末的な直線基調を維持する。
+   ========================================================================== */
+
+/* ==========================================================================
+   01. TOKENS
+   ========================================================================== */
+
+:root {
+  /* --- surface --- */
+  --bg:            #040A15;
+  --bg-1:          #050D1A;
+  --bg-2:          #071322;
+  --panel:         #0C1A2E;
+  --panel-deep:    #050225;
+
+  /* --- line --- */
+  --line:          #1A2D4A;
+  --line-soft:     rgba(26, 45, 74, .5);
+
+  /* --- text --- */
+  --text:          #EEF2FF;
+  --text-2:        #8090A8;
+  --text-3:        #4A6080;
+
+  /* --- accent --- */
+  --cyan:          #00D4E8;
+  --cyan-30:       rgba(0, 212, 232, .3);
+  --cyan-40:       rgba(0, 212, 232, .4);
+  --cyan-08:       rgba(0, 212, 232, .08);
+  --blue:          #9BCCFA;
+  --lav:           #D6CDF7;
+  --warm:          #E8B89A;   /* ミサキの記憶 */
+  --violet:        #8A38F5;
+
+  /* --- alert --- */
+  --red:           #CC2233;
+  --red-40:        rgba(204, 34, 51, .4);
+  --red-30:        rgba(204, 34, 51, .3);
+  --red-bg:        #1A0010;
+
+  /* --- type --- */
+  --font-mono: "Share Tech Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --font-jp:   "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
+               "Yu Gothic", Meiryo, sans-serif;
+
+  --fs-hero:   clamp(3rem, 9.5vw, 6rem);      /* Figma 96px */
+  --fs-h2:     clamp(1.375rem, 2.6vw, 1.875rem); /* Figma 30px / Light */
+  --fs-lead:   clamp(0.9375rem, 1.2vw, 1rem);
+  --fs-body:   0.9375rem;
+  --fs-sm:     0.875rem;
+  --fs-xs:     0.75rem;
+  --fs-2xs:    0.625rem;
+
+  /* --- layout --- */
+  --container:   1280px;
+  --gutter:      80px;
+  --section-y:   128px;                        /* Figma section padding */
+
+  /* --- motion --- */
+  --ease:      cubic-bezier(.22, .61, .36, 1);
+  --dur:       .45s;
+
+  --header-h:  72px;
+}
+
+@media (max-width: 900px) {
+  :root {
+    --gutter:    32px;
+    --section-y: 88px;
+    --header-h:  60px;
+  }
+}
+
+@media (max-width: 520px) {
+  :root {
+    --gutter:    20px;
+    --section-y: 72px;
+  }
+}
+
+/* ==========================================================================
+   02. RESET / BASE
+   ========================================================================== */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  /* 固定ヘッダー分を考慮してアンカー位置を補正 */
+  scroll-padding-top: calc(var(--header-h) + 24px);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-jp);
+  font-size: var(--fs-body);
+  font-weight: 400;
+  line-height: 1.9;
+  letter-spacing: .02em;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* モーダル展開中の背面スクロールを止める */
+body.is-locked { overflow: hidden; }
+
+h1, h2, h3, p, dl, dd, figure, blockquote, ol { margin: 0; }
+ol { padding: 0; list-style: none; }
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--dur) var(--ease), opacity var(--dur) var(--ease);
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* フォーカスリング：常時ではなくキーボード操作時のみ表示 */
+:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--cyan);
+  color: var(--bg);
+}
+
+/* --- utilities --- */
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.center { text-align: center; }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  padding: 12px 20px;
+  background: var(--cyan);
+  color: var(--bg);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: .1em;
+  transform: translateY(-120%);
+  transition: transform .2s var(--ease);
+}
+.skip-link:focus { transform: translateY(0); }
+
+/* ==========================================================================
+   03. TYPOGRAPHY PRIMITIVES
+   ========================================================================== */
+
+/* セクションラベル：Share Tech Mono / 0.3em トラッキング + 16px の罫 */
+.label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+  color: var(--cyan);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  line-height: 1.33;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+}
+
+.label__rule {
+  flex: none;
+  width: 16px;
+  height: 1px;
+  background: currentColor;
+}
+
+.label--plain {
+  margin-bottom: 16px;
+  color: var(--text-3);
+  letter-spacing: .2em;
+}
+
+.h2 {
+  max-width: 22em;
+  margin-bottom: 24px;
+  color: var(--text);
+  font-size: var(--fs-h2);
+  font-weight: 300;          /* Figma: Noto Sans JP Light */
+  line-height: 1.65;
+  letter-spacing: .01em;
+}
+
+.h2--accent { color: var(--blue); }
+
+.lead {
+  max-width: 48em;
+  color: var(--text-2);
+  font-size: var(--fs-lead);
+  line-height: 1.9;
+}
+
+.note {
+  color: var(--text-3);
+  font-size: var(--fs-xs);
+  line-height: 1.7;
+}
+
+/* 上映仕様などの補足注記 */
+.spec-note {
+  max-width: 46em;
+  margin-top: 20px;
+  padding-left: 14px;
+  border-left: 2px solid var(--cyan-40);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  line-height: 1.9;
+}
+
+/* ==========================================================================
+   04. BUTTONS
+   ========================================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 12px 24px;
+  border: 1.25px solid var(--line);
+  color: var(--text-2);
+  font-family: var(--font-jp);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  line-height: 1.43;
+  letter-spacing: .05em;
+  text-align: center;
+  white-space: nowrap;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    color        var(--dur) var(--ease),
+    border-color var(--dur) var(--ease),
+    background   var(--dur) var(--ease),
+    box-shadow   var(--dur) var(--ease);
+}
+
+/* Figma はシアンのアウトラインのみだが、KGI（CTA遷移率15%）を踏まえ
+   主CTAには微量の面と hover 反転を追加して可視性を補強している */
+.btn--primary {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  background: var(--cyan-08);
+}
+
+.btn--primary:hover,
+.btn--primary:focus-visible {
+  background: var(--cyan);
+  color: var(--bg);
+  box-shadow: 0 0 24px rgba(0, 212, 232, .28);
+}
+
+.btn--ghost:hover,
+.btn--ghost:focus-visible {
+  border-color: var(--cyan-40);
+  color: var(--text);
+}
+
+.btn--sm {
+  min-height: 40px;
+  padding: 8px 20px;
+  font-size: var(--fs-xs);
+}
+
+.btn__icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* ==========================================================================
+   05. HEADER / NAV
+   ========================================================================== */
+
+.site-header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 100;
+  height: var(--header-h);
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+
+/* JS が 40px 以降で付与 */
+.site-header.is-scrolled {
+  background: rgba(4, 10, 21, .85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom-color: var(--line-soft);
+}
+
+.header__inner {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  height: 100%;
+}
+
+.brand {
+  flex: none;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 1.125rem;
+  letter-spacing: .2em;
+  white-space: nowrap;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  margin-left: auto;
+}
+
+.nav a {
+  position: relative;
+  color: var(--text-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: .18em;
+  padding-block: 4px;
+}
+
+.nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--cyan);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur) var(--ease);
+}
+
+.nav a:hover,
+.nav a.is-current { color: var(--text); }
+.nav a:hover::after,
+.nav a.is-current::after { transform: scaleX(1); }
+
+.header__cta { flex: none; }
+
+/* --- hamburger --- */
+
+.nav-toggle {
+  display: none;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  margin-left: auto;
+  position: relative;
+}
+
+.nav-toggle span {
+  position: absolute;
+  left: 11px;
+  width: 22px;
+  height: 1.25px;
+  background: var(--text);
+  transition: transform var(--dur) var(--ease), opacity .2s var(--ease);
+}
+.nav-toggle span:nth-child(1) { top: 16px; }
+.nav-toggle span:nth-child(2) { top: 21.5px; }
+.nav-toggle span:nth-child(3) { top: 27px; }
+
+.nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+
+.mobile-nav {
+  display: none;
+  flex-direction: column;
+  padding: 8px var(--gutter) 32px;
+  background: rgba(4, 10, 21, .97);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.mobile-nav a {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line-soft);
+  color: var(--text-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  letter-spacing: .18em;
+}
+.mobile-nav a:last-child { border-bottom: 0; }
+.mobile-nav a:hover { color: var(--cyan); }
+
+@media (max-width: 1080px) {
+  .nav,
+  .header__cta { display: none; }
+  .nav-toggle { display: block; }
+  .mobile-nav { display: flex; }
+  .mobile-nav[hidden] { display: none; }
+}
+
+/* ==========================================================================
+   06. SECTION SHELL
+   ========================================================================== */
+
+.section {
+  position: relative;
+  padding-block: var(--section-y);
+  background-color: var(--bg-1);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  isolation: isolate;
+}
+
+/* 各セクションの背景画像は暗く沈めて可読性を確保する */
+.section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg,
+    rgba(4, 10, 21, .93) 0%,
+    rgba(4, 10, 21, .88) 50%,
+    rgba(4, 10, 21, .96) 100%);
+}
+
+/* 背景画像は JS が .is-bg を付けたときだけ読み込む。
+   全セクション分（約17MB）を初回描画で取りに行かないための遅延読込。
+   企画書「速度：画像最適化、遅延読込」に対応 */
+.section.is-bg { transition: background-color .6s var(--ease); }
+
+.section--memorylog.is-bg   { background-image: url("../../public/images/bg-memorylog.webp"); }
+.section--story.is-bg       { background-image: url("../../public/images/bg-story.webp"); }
+.section--characters.is-bg  { background-image: url("../../public/images/bg-characters.webp"); }
+.section--grid.is-bg        { background-image: url("../../public/images/bg-grid.webp"); }
+.section--trailer.is-bg     { background-image: url("../../public/images/bg-trailer.webp"); }
+.section--production.is-bg  { background-image: url("../../public/images/bg-production.webp"); }
+.section--value.is-bg       { background-image: url("../../public/images/bg-theatervalue.webp"); }
+.section--theater.is-bg     { background-image: url("../../public/images/bg-theater.webp"); }
+.section--final.is-bg       { background-image: url("../../public/images/bg-finalcta.webp"); }
+
+/* セクション間の細い境界線 */
+.section + .section { border-top: 1px solid var(--line-soft); }
+
+/* ==========================================================================
+   07. REVEAL — スクロール表示（企画書「モーション」方針に沿った最小限の演出）
+   ========================================================================== */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity   .8s var(--ease),
+    transform .8s var(--ease);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* JS 無効時のフォールバックは index.html の <noscript> 側で解除する */
+
+/* --------------------------------------------------------------------------
+   タイプライター（見出し・ラベル用）
+   1文字ずつ opacity を立てて「打ち込まれる」ように見せる。
+   文字は最初から DOM に存在するので、読み上げ順や検索・コピーには影響しない。
+   -------------------------------------------------------------------------- */
+
+/* 文字送りは各文字が担うので、ブロック自体の fade-up は無効化する */
+.reveal.tw {
+  opacity: 1;
+  transform: none;
+}
+
+.tw-c {
+  display: inline-block;   /* 1文字ずつ包んでも折り返せるようにする */
+  opacity: 0;
+  /* 段階的に「点く」ようにするため、遷移はほぼ瞬間にする */
+  transition: opacity .06s linear;
+}
+
+/* 日本語は任意位置で折り返す。分割済みでも禁則が効かないため明示する */
+.tw {
+  word-break: normal;
+  overflow-wrap: anywhere;
+  line-break: strict;
+}
+
+/* .label は display:flex のため、1文字ずつの span が折り返せるよう
+   flex-wrap を許可する。tw 分割による横はみ出しの防止 */
+.label.tw {
+  flex-wrap: wrap;
+  row-gap: 2px;
+}
+
+/* 罫線（label__rule）は先頭で改行させず、文字だけ折り返させたい。
+   スペースの span は inline-block だと潰れるため通常の inline に戻す */
+.tw-c { white-space: pre-wrap; }
+
+.tw-c.is-on { opacity: 1; }
+
+/* 入力位置のキャレット。打ち終わると外れるので点滅は残らない */
+.tw-c.is-cursor {
+  position: relative;
+}
+
+.tw-c.is-cursor::after {
+  content: "";
+  position: absolute;
+  top: .12em;
+  right: -.14em;
+  width: 2px;
+  height: 1.02em;
+  background: var(--cyan);
+  box-shadow: 0 0 8px rgba(0, 212, 232, .8);
+  animation: twBlink .8s steps(2, end) infinite;
+}
+
+/* モノスペースのラベルはブロックキャレットにして端末らしさを出す */
+.tw--mono .tw-c.is-cursor::after {
+  width: .5em;
+  right: -.56em;
+  opacity: .75;
+}
+
+@keyframes twBlink {
+  0%, 49%   { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+/* ==========================================================================
+   08. HERO
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 100svh;
+  padding-block: calc(var(--header-h) + 64px) 120px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* 動画と静止KVを重ねる土台。
+   ここに opacity を掛けると子の <video> ごと消えてしまうため、
+   背景画像は ::before に持たせて両者を独立して制御する */
+.hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  /* 素材が暗いので、動画・静止KVの双方に同じ補正をかけて明度を揃える */
+  filter: brightness(1.12) saturate(1.04);
+}
+
+/* 静止状態＝動画の最終フレーム。
+   動画を再生しない環境ではこれがそのままKVとして表示される */
+.hero__media::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("../../public/images/hero-end.webp") center / cover no-repeat;
+}
+
+/* イントロ動画。最終フレームが .hero__media の背景と一致するため、
+   再生後にフェードアウトさせるとそのまま静止したように見える */
+.hero__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0;
+  transition: opacity .8s var(--ease);
+  pointer-events: none;
+}
+
+.hero__video.is-playing { opacity: 1; }
+
+/* イントロ再生中は静止KV（＝動画の結末）だけを伏せる。
+   opacity は ::before に掛けるので、上に重なる <video> は影響を受けない */
+.hero.is-intro .hero__media::before {
+  opacity: 0;
+  transition: opacity .9s var(--ease);
+}
+
+/* 再生終了時、動画のフェードアウトと静止KVのフェードインが同時に起きるため、
+   同一フレーム同士のクロスフェードとなり継ぎ目が見えない */
+.hero.is-intro.is-intro-done .hero__media::before { opacity: 1; }
+
+/* イントロ後、静止したKVをゆっくり寄せて余韻を残す */
+.hero.is-intro-done .hero__media::before {
+  animation: heroDrift 40s var(--ease) 1s infinite alternate;
+}
+
+@keyframes heroDrift {
+  from { transform: scale(1); }
+  to   { transform: scale(1.07); }
+}
+
+/* 最終フレームは左にミサキ、右にハルトが配置される構図のため、
+   左は見出しの可読性を確保しつつ、右の人物は沈めすぎない配分にしている */
+/* イントロ再生中はスクリムを外す。
+   冒頭の雨のシーンは素材自体が暗いため、見出し用の暗幕を重ねると
+   ほぼ黒画面になってしまう。文字が出ていない再生中は不要 */
+.hero.is-intro .hero__scrim {
+  opacity: 0;
+  transition: opacity 1s var(--ease);
+}
+
+/* 文字が現れるタイミングでスクリムを戻し、可読性を確保する */
+.hero.is-intro.is-intro-done .hero__scrim { opacity: 1; }
+
+.hero__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg,
+      rgba(4, 10, 21, .85) 0%,
+      rgba(4, 10, 21, .45) 45%,
+      rgba(4, 10, 21, .15) 70%,
+      rgba(4, 10, 21, .30) 100%),
+    linear-gradient(180deg,
+      rgba(4, 10, 21, .50) 0%,
+      rgba(4, 10, 21, .05) 35%,
+      rgba(4, 10, 21, .35) 75%,
+      rgba(4, 10, 21, .97) 100%);
+}
+
+/* --- イントロ再生中のスキップ操作（JSが挿入） --- */
+
+.hero__skip {
+  position: absolute;
+  right: var(--gutter);
+  bottom: 40px;
+  z-index: 3;
+  padding: 10px 18px;
+  border: 1px solid var(--line);
+  background: rgba(4, 10, 21, .6);
+  color: var(--text-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: .2em;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: opacity .5s var(--ease), color var(--dur) var(--ease),
+              border-color var(--dur) var(--ease);
+}
+
+.hero__skip:hover,
+.hero__skip:focus-visible {
+  color: var(--cyan);
+  border-color: var(--cyan-40);
+}
+
+.hero__skip.is-gone {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* 走査線：監視システムのテクスチャ */
+.hero__scrim::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(0, 212, 232, .035) 0px,
+    rgba(0, 212, 232, .035) 1px,
+    transparent 1px,
+    transparent 4px);
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.hero__inner {
+  position: relative;
+  max-width: var(--container);
+}
+
+.hero__title {
+  margin-bottom: 32px;
+  color: var(--lav);
+  font-family: var(--font-mono);
+  font-size: var(--fs-hero);
+  font-weight: 400;
+  line-height: .94;
+  letter-spacing: .1125em;
+  text-transform: uppercase;
+  text-shadow: 0 0 60px rgba(214, 205, 247, .25);
+}
+
+.hero__lead {
+  max-width: 34em;
+  margin-bottom: 40px;
+  color: var(--text);
+  font-size: clamp(1rem, 1.9vw, 1.5rem);
+  font-weight: 300;
+  line-height: 1.85;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.hero__meta {
+  color: var(--text-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: .18em;
+}
+
+/* --- scroll cue --- */
+
+.hero__scroll {
+  position: absolute;
+  left: 50%;
+  bottom: 32px;
+  width: 1px;
+  height: 56px;
+  background: var(--line);
+  transform: translateX(-50%);
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity .8s var(--ease) .6s;
+}
+
+/* スクロール誘導はイントロ終了後に現れる */
+.hero.is-intro-done .hero__scroll { opacity: 1; }
+
+.hero__scroll span {
+  position: absolute;
+  inset: 0;
+  background: var(--cyan);
+  animation: scrollCue 2.4s var(--ease) infinite;
+}
+
+@keyframes scrollCue {
+  0%        { transform: translateY(-100%); }
+  60%, 100% { transform: translateY(100%); }
+}
+
+/* 各 reveal に段差をつけて情報が順に立ち上がるようにする */
+.hero__title { transition-delay: .05s; }
+.hero__lead  { transition-delay: .18s; }
+.hero__actions { transition-delay: .3s; }
+.hero__meta  { transition-delay: .42s; }
+
+/* --- SP: 縦の余白を詰め、タイトルを画面幅に合わせる --- */
+@media (max-width: 640px) {
+  .hero {
+    /* 動画帯の高さ。幅全幅（56.25vw ＝ 16:9）を基準に、
+       背の低い端末では svh で頭打ちにする */
+    --hero-media-h: min(56.25vw, 44svh);
+    /* 縦画面では動画（上）＋テキスト（下）の縦積みにする。
+       align は使わず、動画帯の高さぶんを padding-top で確実に確保して
+       テキストが動画へ重ならないようにする（短い画面でも崩れない） */
+    align-items: flex-start;
+    padding-block:
+      calc(var(--header-h) + var(--hero-media-h) + 28px)
+      44px;
+  }
+
+  /* 16:9 の映像を縦画面に cover で敷くと左右75%が切れて何も分からない。
+     縦画面では全景を見せるため、上部に 16:9 でレターボックス表示する */
+  .hero__media {
+    /* 上端をヘッダー下に置き、画面の上部に 16:9 の帯で映像を収める */
+    inset: var(--header-h) 0 auto;
+    height: var(--hero-media-h);
+  }
+
+  .hero__media::before {
+    background-size: contain;
+    background-position: center top;
+    background-color: var(--bg);
+  }
+
+  .hero__video {
+    object-fit: contain;
+    object-position: center top;
+  }
+
+  /* テキスト背後だけを暗く。上の映像は暗幕で潰さない */
+  .hero__scrim {
+    background:
+      linear-gradient(180deg,
+        rgba(4, 10, 21, 0)   0%,
+        rgba(4, 10, 21, 0)   52%,
+        rgba(4, 10, 21, .82) 70%,
+        rgba(4, 10, 21, .97) 100%);
+  }
+
+  .hero__title {
+    /* 320px で約 44px、430px で約 56px。min 48px 固定をやめて画面に追従させる */
+    font-size: clamp(2.75rem, 13.5vw, 3.75rem);
+    margin-bottom: 24px;
+    letter-spacing: .08em;
+  }
+
+  .hero__lead {
+    font-size: 1rem;
+    line-height: 1.8;
+    margin-bottom: 28px;
+  }
+
+  .hero__actions {
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .hero__actions .btn { flex: 1 1 100%; }
+
+  .hero__meta { font-size: var(--fs-2xs); letter-spacing: .14em; }
+
+  /* スクロール誘導はボタンと重なりやすいので短くする */
+  .hero__scroll { height: 40px; bottom: 20px; }
+}
+
+/* SP のリード文は改行位置が不自然になりやすいので、
+   強制改行を無効化して自然に折り返させる */
+@media (max-width: 420px) {
+  .hero__lead br { display: none; }
+  .hero__title { font-size: clamp(2.5rem, 14vw, 3.25rem); }
+}
+
+/* 背の低い端末（旧SE・折りたたみ外側など）は 1 画面に収まりにくいので、
+   映像帯と余白を圧縮して FV 内に CTA まで収める */
+@media (max-width: 640px) and (max-height: 720px) {
+  .hero {
+    --hero-media-h: min(46vw, 30svh);
+    padding-block:
+      calc(var(--header-h) + var(--hero-media-h) + 20px)
+      28px;
+  }
+  .hero__title  { margin-bottom: 16px; }
+  .hero__lead   { margin-bottom: 18px; line-height: 1.7; }
+  .hero__actions { margin-bottom: 18px; }
+  /* 短い画面ではスクロール誘導は邪魔になりやすいので隠す */
+  .hero__scroll { display: none; }
+}
+
+/* ==========================================================================
+   09. MEMORY LOG — 3日間の空白
+   ========================================================================== */
+
+.section--memorylog .h2 { max-width: 26em; }
+.section--memorylog .lead { margin-bottom: 56px; }
+
+.logpanel {
+  border: 1.25px solid var(--line);
+  background: rgba(12, 26, 46, .72);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.logpanel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--line);
+  color: var(--text-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: .3em;
+  text-transform: uppercase;
+}
+
+.logpanel__status { color: var(--cyan); }
+
+/* SCANNING… のドット。企画書「常時点滅を避ける」に配慮し
+   ドットのみを控えめに変化させる */
+.dots::after {
+  content: "";
+  animation: dots 1.8s steps(4, end) infinite;
+}
+
+@keyframes dots {
+  0%   { content: ""; }
+  25%  { content: "."; }
+  50%  { content: ".."; }
+  75%  { content: "..."; }
+  100% { content: ""; }
+}
+
+.logpanel__rows {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.logpanel__rows p {
+  color: var(--text-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  line-height: 2;
+  letter-spacing: .06em;
+}
+
+/* --- 欠落した3日間 --- */
+
+.logpanel__days {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+
+.daycard {
+  padding: 24px;
+  border-right: 1.25px solid var(--line);
+}
+.daycard:last-child { border-right: 0; }
+
+.daycard__date {
+  color: var(--text-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  letter-spacing: .12em;
+}
+
+.daycard__err {
+  margin-top: 8px;
+  color: var(--red);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  letter-spacing: .04em;
+}
+
+/* 記憶スロット：中身が失われた 3 つの枠 */
+.daycard__slots {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.daycard__slots span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border: 1.25px solid var(--red-30);
+  background: var(--red-bg);
+  color: var(--red-40);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: .08em;
+}
+
+/* --- 復元演出の出力領域 --- */
+
+.daycard__restore {
+  margin-top: 12px;
+  min-height: 0;
+}
+
+/* 打ち込みが始まったときだけ枠を立ち上げる */
+.daycard__restore.is-active {
+  padding-top: 12px;
+  border-top: 1px solid var(--red-30);
+}
+
+.rst__line {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  line-height: 1.85;
+  letter-spacing: .04em;
+  word-break: break-all;   /* 化け文字が枠外へはみ出さないように */
+  min-height: 1.85em;
+}
+
+.rst-c {
+  opacity: 0;
+  transition: opacity .05s linear;
+}
+
+.rst-c.is-on { opacity: 1; }
+
+/* 文字化け部分：沈めて「読めない」ことを示す */
+.rst-g {
+  color: var(--text-3);
+  opacity: 0;
+}
+.rst-g.is-on { opacity: .55; }
+
+.rst-h { color: var(--text-3); }
+
+.rst-e {
+  color: var(--red);
+  letter-spacing: .08em;
+}
+
+/* 読み取れた単語。企画書の配色ルールに従って色を分ける */
+.rst-r {
+  font-weight: 400;
+  color: var(--text-2);
+}
+
+.rst-r--sys  { color: var(--cyan); }
+.rst-r--warm { color: var(--warm); }
+.rst-r--name { color: var(--text); }
+
+/* 確定した瞬間だけ淡く発光させる（点滅は残さない） */
+.rst-r.is-locked {
+  text-shadow: 0 0 10px currentColor;
+  animation: rstLock .8s var(--ease) 1;
+}
+
+@keyframes rstLock {
+  0%   { text-shadow: 0 0 18px currentColor; }
+  100% { text-shadow: 0 0 10px currentColor; }
+}
+
+/* 復元後、カードの見出しを「断片回収」に切り替える */
+.daycard__err.is-partial {
+  color: var(--warm);
+}
+
+/* 復元中のボタン */
+.btn.is-busy {
+  pointer-events: none;
+  opacity: .75;
+}
+
+.logpanel__error {
+  padding: 16px 24px;
+  border-top: 1.25px solid var(--red-30);
+  background: rgba(26, 0, 16, .6);
+  color: var(--red);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  line-height: 1.9;
+  letter-spacing: .08em;
+}
+
+.section--memorylog .center { margin-top: 56px; }
+
+@media (max-width: 720px) {
+  .logpanel__days { grid-template-columns: 1fr; }
+  .daycard {
+    border-right: 0;
+    border-bottom: 1.25px solid var(--line);
+  }
+  .daycard:last-child { border-bottom: 0; }
+}
+
+/* ==========================================================================
+   10. STORY
+   ========================================================================== */
+
+.story__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 64px;
+  align-items: start;
+}
+
+.story__figure {
+  position: relative;
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+
+.story__figure img {
+  width: 100%;
+  aspect-ratio: 1055 / 1491;
+  object-fit: cover;
+  filter: saturate(.85) contrast(1.05);
+  transition: transform 1.2s var(--ease);
+}
+
+.story__figure:hover img { transform: scale(1.03); }
+
+.prose p + p { margin-top: 24px; }
+
+.prose p {
+  color: var(--text-2);
+  font-size: var(--fs-lead);
+  line-height: 1.95;
+}
+
+.prose strong {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.story__q {
+  margin-top: 40px;
+  padding-left: 20px;
+  border-left: 2px solid var(--cyan);
+  color: var(--text);
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  font-weight: 300;
+  line-height: 1.9;
+}
+
+.story__q em {
+  color: var(--warm);   /* ミサキ＝淡い暖色 */
+  font-style: normal;
+}
+
+@media (max-width: 900px) {
+  .story__grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .story__figure img { aspect-ratio: 4 / 3; }
+}
+
+/* ==========================================================================
+   11. CHARACTERS
+   ========================================================================== */
+
+.section--characters .lead { margin-bottom: 64px; }
+
+.chars {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px;
+}
+
+.charcard {
+  display: flex;
+  flex-direction: column;
+  border: 1.25px solid var(--line);
+  background: rgba(12, 26, 46, .55);
+  transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+
+.charcard:hover {
+  border-color: var(--cyan-40);
+  transform: translateY(-4px);
+}
+
+/* ミサキ側は暖色。「淡い暖色はミサキの記憶」方針に対応 */
+.charcard--warm:hover { border-color: rgba(232, 184, 154, .5); }
+
+.charcard__media {
+  position: relative;
+  overflow: hidden;
+}
+
+.charcard__media img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: center top;
+  filter: grayscale(.35) contrast(1.05);
+  transition: filter .8s var(--ease), transform 1.2s var(--ease);
+}
+
+.charcard:hover .charcard__media img {
+  filter: grayscale(0) contrast(1.05);
+  transform: scale(1.04);
+}
+
+/* 上端に色帯を置いて 2 人を色で区別する */
+.charcard__media::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 2px;
+  background: var(--cyan);
+  opacity: .6;
+}
+.charcard--warm .charcard__media::after { background: var(--warm); }
+
+.charcard__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 28px 24px 24px;
+}
+
+.charcard__role {
+  color: var(--cyan);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: .3em;
+  text-transform: uppercase;
+}
+.charcard--warm .charcard__role { color: var(--warm); }
+
+.charcard__name {
+  margin-top: 12px;
+  color: var(--text);
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: .04em;
+}
+
+.charcard__tag {
+  margin-top: 12px;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  line-height: 1.85;
+}
+
+.charcard__detail {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.charcard__detail p {
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  line-height: 1.9;
+}
+
+.charcard__toggle {
+  margin-top: auto;
+  padding-top: 24px;
+  color: var(--text-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: .12em;
+  text-align: left;
+  transition: color var(--dur) var(--ease);
+}
+
+.charcard__toggle:hover { color: var(--cyan); }
+.charcard--warm .charcard__toggle:hover { color: var(--warm); }
+
+@media (max-width: 820px) {
+  .chars { grid-template-columns: 1fr; }
+}
+
+/* ==========================================================================
+   12. GRID SYSTEM
+   ========================================================================== */
+
+.quote-mono {
+  margin-bottom: 32px;
+  padding-left: 20px;
+  border-left: 1px solid var(--cyan-40);
+  color: var(--cyan);
+  font-family: var(--font-mono);
+  font-size: clamp(.875rem, 1.4vw, 1.0625rem);
+  line-height: 2;
+  letter-spacing: .1em;
+}
+
+.section--grid .lead { margin-bottom: 56px; }
+
+.gridpanel {
+  padding: 40px;
+  border: 1.25px solid var(--line);
+  background:
+    linear-gradient(rgba(12, 26, 46, .8), rgba(12, 26, 46, .8)),
+    /* 監視グリッドの方眼 */
+    repeating-linear-gradient(90deg, var(--line-soft) 0 1px, transparent 1px 64px),
+    repeating-linear-gradient(0deg,  var(--line-soft) 0 1px, transparent 1px 64px);
+}
+
+.gridpanel__cap {
+  margin-bottom: 32px;
+  color: var(--text-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: .3em;
+  text-transform: uppercase;
+}
+
+/* --- 4ステップのフロー --- */
+
+.flow {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.flow__step {
+  position: relative;
+  padding: 24px 20px;
+  border: 1px solid var(--line);
+  background: rgba(4, 10, 21, .6);
+}
+
+/* ステップ間の接続矢印 */
+.flow__step:not(:last-child)::after {
+  content: "→";
+  position: absolute;
+  top: 50%;
+  right: -20px;
+  z-index: 1;
+  color: var(--cyan-40);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  line-height: 1;
+  transform: translateY(-50%);
+}
+
+.flow__num {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--cyan);
+  font-family: var(--font-mono);
+  font-size: 1.75rem;
+  line-height: 1;
+  letter-spacing: .06em;
+}
+
+.flow__step h3 {
+  margin-bottom: 8px;
+  color: var(--text);
+  font-size: var(--fs-lead);
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.flow__step p {
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+  line-height: 1.85;
+}
+
+/* 最終段階「事前排除」は赤に寄せて不穏さを出す */
+.flow__step:last-child .flow__num { color: var(--red); }
+.flow__step:last-child { border-color: var(--red-30); }
+
+@media (max-width: 980px) {
+  .flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .flow__step:nth-child(2)::after { display: none; }
+}
+
+@media (max-width: 560px) {
+  .flow { grid-template-columns: 1fr; }
+  .flow__step::after { display: none !important; }
+  .gridpanel { padding: 24px 20px; }
+}
+
+/* --- accordions（SFコア層向けの二層目） --- */
+
+.accordions {
+  margin-top: 48px;
+  border-top: 1px solid var(--line);
+}
+
+.acc { border-bottom: 1px solid var(--line); }
+
+.acc__btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  width: 100%;
+  padding: 24px 0;
+  color: var(--text);
+  font-size: var(--fs-lead);
+  font-weight: 400;
+  text-align: left;
+  transition: color var(--dur) var(--ease);
+}
+
+.acc__btn:hover { color: var(--cyan); }
+
+.acc__sign {
+  flex: none;
+  color: var(--cyan);
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+  line-height: 1;
+  transition: transform var(--dur) var(--ease);
+}
+
+.acc__btn[aria-expanded="true"] .acc__sign { transform: rotate(45deg); }
+
+.acc__panel {
+  padding: 0 0 24px;
+}
+
+.acc__panel p {
+  max-width: 60em;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  line-height: 1.95;
+}
+
+/* ==========================================================================
+   13. TRAILER
+   ========================================================================== */
+
+.section--trailer .lead { margin-bottom: 48px; }
+
+/* 静止画先行（企画書「動画は静止画先行」）。クリックでモーダル再生 */
+.player {
+  position: relative;
+  display: block;
+  width: 100%;
+  border: 1.25px solid var(--line);
+  overflow: hidden;
+  transition: border-color var(--dur) var(--ease);
+}
+
+.player:hover { border-color: var(--cyan-40); }
+
+.player img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  filter: brightness(.68) saturate(.9);
+  transition: filter .8s var(--ease), transform 1.2s var(--ease);
+}
+
+.player:hover img {
+  filter: brightness(.82) saturate(1);
+  transform: scale(1.02);
+}
+
+.player__btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 88px;
+  height: 88px;
+  border: 1.25px solid var(--cyan);
+  background: rgba(4, 10, 21, .55);
+  color: var(--cyan);
+  font-size: 1.5rem;
+  line-height: 1;
+  text-indent: 4px;   /* ▶ の視覚的中心を補正 */
+  transform: translate(-50%, -50%);
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease),
+              box-shadow var(--dur) var(--ease);
+}
+
+.player:hover .player__btn {
+  background: var(--cyan);
+  color: var(--bg);
+  box-shadow: 0 0 40px rgba(0, 212, 232, .35);
+}
+
+.player__cap {
+  position: absolute;
+  left: 50%;
+  bottom: 32px;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: .25em;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+
+/* --- gallery --- */
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.gallery figure {
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+
+/* サムネイル全体を拡大表示のトリガーにする */
+.gallery__btn {
+  position: relative;
+  display: block;
+  width: 100%;
+  cursor: zoom-in;
+}
+
+.gallery img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  filter: saturate(.85) brightness(.9);
+  transition: filter .8s var(--ease), transform 1.2s var(--ease);
+}
+
+.gallery__btn:hover img,
+.gallery__btn:focus-visible img {
+  filter: saturate(1) brightness(1);
+  transform: scale(1.05);
+}
+
+/* 拡大できることを示すインジケーター */
+.gallery__zoom {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--cyan-40);
+  background: rgba(4, 10, 21, .7);
+  color: var(--cyan);
+  font-size: .875rem;
+  line-height: 1;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+
+.gallery__btn:hover .gallery__zoom,
+.gallery__btn:focus-visible .gallery__zoom {
+  opacity: 1;
+  transform: none;
+}
+
+/* --- ライトボックス --- */
+
+.modal__dialog--lightbox {
+  width: min(100%, 1200px);
+  max-height: 92vh;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overflow: visible;
+}
+
+/* 閉じるボタンは画像の右上・内側に重ねる（外側だと狭い画面で切れるため） */
+.modal--lightbox .modal__close {
+  top: 8px;
+  right: 8px;
+  z-index: 3;
+  border: 1px solid var(--line);
+  background: rgba(4, 10, 21, .85);
+  color: var(--text);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.modal--lightbox .modal__close:hover { color: var(--cyan); border-color: var(--cyan-40); }
+
+.lightbox__figure {
+  position: relative;   /* ナビ矢印を画像の内側に重ねる基準 */
+  margin: 0;
+  border: 1.25px solid var(--line);
+  background: var(--bg);
+}
+
+.lightbox__figure img {
+  display: block;
+  width: 100%;
+  max-height: 78vh;
+  object-fit: contain;
+  background: #000;
+}
+
+.lightbox__cap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 20px;
+  border-top: 1px solid var(--line);
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+  letter-spacing: .04em;
+}
+
+.lightbox__count {
+  flex: none;
+  color: var(--text-3);
+  font-family: var(--font-mono);
+  letter-spacing: .15em;
+}
+
+/* ナビ矢印は画像の内側・左右端に重ねる。
+   figcaption を基準に外へ出さないので、どの画面幅でも切れない */
+.lightbox__nav {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 1px solid var(--line);
+  background: rgba(4, 10, 21, .78);
+  color: var(--text);
+  /* ❮ ❯（U+276E/276F）は太めで視認性が高く、枠内に収まりやすい */
+  font-size: 1.125rem;
+  line-height: 1;
+  transform: translateY(-50%);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease),
+              background var(--dur) var(--ease);
+}
+
+.lightbox__nav:hover,
+.lightbox__nav:focus-visible {
+  color: var(--cyan);
+  border-color: var(--cyan-40);
+  background: rgba(4, 10, 21, .92);
+}
+
+.lightbox__nav--prev { left: 12px; }
+.lightbox__nav--next { right: 12px; }
+
+@media (max-width: 560px) {
+  .lightbox__nav { width: 42px; height: 42px; font-size: 1.375rem; }
+  .lightbox__nav--prev { left: 8px; }
+  .lightbox__nav--next { right: 8px; }
+  .lightbox__cap { flex-direction: column; align-items: flex-start; gap: 6px; }
+}
+
+.cta-inline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 56px;
+  text-align: center;
+}
+
+@media (max-width: 720px) {
+  .gallery { grid-template-columns: 1fr; }
+  .player__btn { width: 64px; height: 64px; font-size: 1.125rem; }
+  .player__cap { bottom: 20px; font-size: var(--fs-2xs); }
+}
+
+/* ==========================================================================
+   14. PRODUCTION
+   ========================================================================== */
+
+.prod__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: 64px;
+  align-items: start;
+}
+
+.prod__figure {
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+
+.prod__figure img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  filter: saturate(.8);
+}
+
+.quote {
+  margin-top: 32px;
+  padding: 28px;
+  border-left: 2px solid var(--cyan);
+  background: rgba(12, 26, 46, .6);
+}
+
+.quote__cap {
+  margin-bottom: 12px;
+  color: var(--text-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: .2em;
+}
+
+.quote p:last-child {
+  color: var(--text);
+  font-size: var(--fs-lead);
+  font-weight: 300;
+  line-height: 1.95;
+}
+
+/* --- credits --- */
+
+.credits {
+  border-top: 1px solid var(--line);
+}
+
+.credits > div {
+  display: grid;
+  grid-template-columns: 7em 1fr;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.credits dt {
+  color: var(--text-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: .12em;
+}
+
+.credits dd {
+  margin: 0;
+  color: var(--text);
+  font-size: var(--fs-sm);
+}
+
+@media (max-width: 900px) {
+  .prod__grid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+}
+
+/* ==========================================================================
+   15. THEATER VALUE
+   ========================================================================== */
+
+.valuecards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 56px;
+}
+
+.valuecard {
+  padding: 36px 28px;
+  border: 1.25px solid var(--line);
+  background: rgba(12, 26, 46, .5);
+  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+
+.valuecard:hover {
+  border-color: var(--cyan-40);
+  background: rgba(12, 26, 46, .8);
+}
+
+.valuecard__icon {
+  display: block;
+  margin-bottom: 20px;
+  color: var(--cyan);
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+.valuecard h3 {
+  margin-bottom: 12px;
+  color: var(--text);
+  font-size: 1.125rem;
+  font-weight: 500;
+  letter-spacing: .06em;
+}
+
+.valuecard p {
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  line-height: 1.9;
+}
+
+.section--value .center { margin-top: 56px; }
+
+@media (max-width: 820px) {
+  .valuecards { grid-template-columns: 1fr; }
+}
+
+/* ==========================================================================
+   16. THEATER
+   ========================================================================== */
+
+.theater__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 40px;
+}
+
+.select-wrap {
+  position: relative;
+  min-width: 260px;
+}
+
+/* ネイティブ select の見た目を統一（矢印は擬似要素で描画） */
+.select-wrap::after {
+  content: "▼";
+  position: absolute;
+  top: 50%;
+  right: 18px;
+  color: var(--cyan);
+  font-size: var(--fs-2xs);
+  line-height: 1;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.select-wrap select {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 44px 12px 20px;
+  border: 1.25px solid var(--line);
+  background: rgba(12, 26, 46, .8);
+  color: var(--text);
+  font-family: var(--font-jp);
+  font-size: var(--fs-sm);
+  letter-spacing: .05em;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  transition: border-color var(--dur) var(--ease);
+}
+
+.select-wrap select:hover,
+.select-wrap select:focus { border-color: var(--cyan-40); }
+
+.select-wrap option {
+  background: var(--panel);
+  color: var(--text);
+}
+
+/* --- 検索結果 --- */
+
+.theater__result {
+  margin-top: 32px;
+  padding: 32px;
+  border: 1.25px solid var(--line);
+  background: rgba(12, 26, 46, .6);
+}
+
+.theater__hint {
+  margin-top: 8px;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+/* JS が地域選択時に生成する劇場リスト */
+.theater__list {
+  display: grid;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+.theater__item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 24px;
+  background: var(--panel);
+}
+
+.theater__name {
+  color: var(--text);
+  font-size: var(--fs-lead);
+  font-weight: 500;
+}
+
+.theater__addr {
+  margin-top: 4px;
+  color: var(--text-3);
+  font-size: var(--fs-xs);
+}
+
+.theater__times {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.theater__time {
+  padding: 6px 14px;
+  border: 1px solid var(--cyan-30);
+  color: var(--cyan);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: .08em;
+}
+
+.theater__count {
+  margin-bottom: 20px;
+  color: var(--text-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: .15em;
+}
+
+/* IMAX® / Dolby Atmos などの上映方式バッジ */
+.theater__formats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.theater__format {
+  display: inline-block;
+  padding: 3px 8px;
+  border: 1px solid var(--line);
+  color: var(--text-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  font-weight: 400;
+  letter-spacing: .1em;
+  vertical-align: middle;
+}
+
+/* 予告モーダル内の動画とキャプション */
+.modal__video video {
+  width: 100%;
+  height: 100%;
+  background: #000;
+}
+
+.modal__cap {
+  margin-top: 12px;
+  color: var(--text-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: .15em;
+  text-align: center;
+}
+
+.section--theater .center { margin-top: 40px; }
+
+@media (max-width: 560px) {
+  .theater__controls .btn,
+  .select-wrap { flex: 1 1 100%; min-width: 0; }
+  .theater__result { padding: 24px 20px; }
+}
+
+/* ==========================================================================
+   17. FINAL CTA
+   ========================================================================== */
+
+.section--final { text-align: center; }
+
+/* 劇場公開 / 配信フェーズ 切替タブ */
+.phase {
+  display: inline-flex;
+  margin-bottom: 56px;
+  border: 1.25px solid var(--line);
+}
+
+.phase button {
+  padding: 12px 28px;
+  color: var(--text-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: .15em;
+  transition: color var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+
+.phase button + button { border-left: 1.25px solid var(--line); }
+
+.phase button:hover { color: var(--text); }
+
+.phase button.is-active {
+  background: var(--cyan-08);
+  color: var(--cyan);
+}
+
+.final__logo {
+  margin-bottom: 40px;
+  color: var(--lav);
+  font-family: var(--font-mono);
+  font-size: clamp(1.75rem, 5vw, 3rem);
+  letter-spacing: .18em;
+  text-shadow: 0 0 50px rgba(214, 205, 247, .2);
+}
+
+.final__h2 {
+  max-width: 24em;
+  margin: 0 auto 20px;
+  color: var(--text);
+  font-size: var(--fs-h2);
+  font-weight: 300;
+  line-height: 1.7;
+}
+
+.final__meta {
+  margin-bottom: 40px;
+  color: var(--text-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: .12em;
+}
+
+.final__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.final__share {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 64px;
+  padding-top: 48px;
+  border-top: 1px solid var(--line-soft);
+}
+
+@media (max-width: 560px) {
+  .phase { display: flex; width: 100%; }
+  .phase button { flex: 1; padding: 12px 8px; }
+  .final__actions .btn { flex: 1 1 100%; }
+}
+
+/* ==========================================================================
+   18. FOOTER
+   ========================================================================== */
+
+.site-footer {
+  padding-block: 72px 40px;
+  background: var(--bg);
+  border-top: 1px solid var(--line);
+}
+
+.footer__top {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 40px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.site-footer .brand {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 1.25rem;
+}
+
+.footer__date {
+  color: var(--text-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: .12em;
+}
+
+.footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+}
+
+.footer__links a {
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+  letter-spacing: .06em;
+}
+
+.footer__links a:hover { color: var(--cyan); }
+
+.footer__credit {
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+  line-height: 2;
+}
+
+.footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 32px;
+}
+
+.footer__copy {
+  color: var(--text-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: .08em;
+}
+
+@media (max-width: 820px) {
+  .footer__top { grid-template-columns: 1fr; gap: 32px; }
+}
+
+/* ==========================================================================
+   19. STICKY MOBILE CTA
+   ========================================================================== */
+
+/* 企画書「固定CTAは1〜2個」「画面を覆う巨大UIを避ける」 */
+.sticky-cta {
+  position: fixed;
+  inset: auto 0 0;
+  z-index: 90;
+  display: flex;
+  gap: 8px;
+  padding: 12px var(--gutter) calc(12px + env(safe-area-inset-bottom));
+  background: rgba(4, 10, 21, .94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line);
+  transform: translateY(100%);
+  transition: transform var(--dur) var(--ease);
+}
+
+.sticky-cta.is-visible { transform: translateY(0); }
+.sticky-cta .btn { flex: 1; }
+
+/* デスクトップではヘッダーCTAがあるため非表示 */
+@media (min-width: 1081px) {
+  .sticky-cta { display: none !important; }
+}
+
+/* ==========================================================================
+   20. MODALS
+   ========================================================================== */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.modal[hidden] { display: none; }
+
+.modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 10, 21, .9);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: fadeIn .3s var(--ease);
+}
+
+.modal__dialog {
+  position: relative;
+  width: min(100%, 1040px);
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 24px;
+  border: 1.25px solid var(--line);
+  background: var(--panel);
+  animation: modalIn .4s var(--ease);
+}
+
+.modal__dialog--sm {
+  width: min(100%, 520px);
+  padding: 32px;
+  text-align: center;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.modal__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  color: var(--text-2);
+  font-size: 1.5rem;
+  line-height: 1;
+  transition: color var(--dur) var(--ease);
+}
+
+.modal__close:hover { color: var(--cyan); }
+
+.modal__video {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  text-align: center;
+}
+
+/* 動画素材の支給後は iframe / video に差し替える */
+.modal__video iframe,
+.modal__video video {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.outbound__text {
+  margin-bottom: 28px;
+  color: var(--text);
+  font-size: var(--fs-sm);
+  line-height: 1.95;
+}
+
+.modal__dialog--sm .label--plain { justify-content: center; }
+
+@media (max-width: 560px) {
+  .modal { padding: 12px; }
+  .modal__dialog { padding: 16px; }
+  .modal__dialog--sm { padding: 28px 20px; }
+}
+
+/* ==========================================================================
+   21. TOAST（共有完了などの通知。JS から生成）
+   ========================================================================== */
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 96px;
+  z-index: 200;
+  padding: 14px 24px;
+  border: 1.25px solid var(--cyan-40);
+  background: rgba(4, 10, 21, .96);
+  color: var(--cyan);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: .1em;
+  white-space: nowrap;
+  transform: translate(-50%, 12px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s var(--ease), transform .3s var(--ease);
+}
+
+.toast.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* ==========================================================================
+   22. ACCESSIBILITY — 動きの低減
+   企画書「アクセシビリティ：動きの低減」に対応
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .hero__media,
+  .hero__scroll span,
+  .dots::after { animation: none !important; }
+}
+
+/* ==========================================================================
+   23. PRINT
+   ========================================================================== */
+
+@media print {
+  .site-header,
+  .sticky-cta,
+  .modal,
+  .hero__scroll,
+  .nav-toggle { display: none !important; }
+
+  body { background: #fff; color: #000; }
+  .section::before { display: none; }
+  .reveal { opacity: 1; transform: none; }
+}

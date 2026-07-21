@@ -1,0 +1,18 @@
+# 機密の企画資料（クライアント情報・企画書）は公開しない
+.Plan/
+
+# ローカルツール設定・スキルデータ
+.claude/
+
+# 変換元の重複素材（配信は WebP / 最適化済み MP4 を使用）
+public/images/*.png
+public/video/kling_*.mp4
+
+# OS / エディタ
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+
+# 依存物（現状なし・将来用）
+node_modules/
